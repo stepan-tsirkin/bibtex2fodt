@@ -324,6 +324,9 @@ header = """<?xml version="1.0" encoding="UTF-8"?>
   <style:style style:name="T7" style:family="text">
    <style:text-properties style:font-name="Arial" fo:font-size="11pt" fo:language="en" fo:country="GB" fo:font-weight="bold" officeooo:rsid="000f0823" style:font-size-asian="11pt" style:font-weight-asian="bold" style:font-name-complex="Arial1" style:font-size-complex="10.5pt" style:font-weight-complex="bold"/>
   </style:style>
+  <style:style style:name="T8" style:family="text">
+   <style:text-properties style:font-name="Arial" fo:font-size="11pt" fo:language="en" fo:country="GB" fo:font-style="italic" style:font-size-asian="11pt" style:font-style-asian="italic" style:font-name-complex="Arial1" style:font-size-complex="10.5pt" style:font-style-complex="italic"/>
+  </style:style>
   <style:page-layout style:name="pm1">
    <style:page-layout-properties fo:page-width="8.2681in" fo:page-height="11.6929in" style:num-format="1" style:print-orientation="portrait" fo:margin-top="0.7874in" fo:margin-bottom="0.7874in" fo:margin-left="0.7874in" fo:margin-right="0.7874in" style:writing-mode="lr-tb" style:footnote-max-height="0in" loext:margin-gutter="0in">
     <style:footnote-sep style:width="0.0071in" style:distance-before-sep="0.0398in" style:distance-after-sep="0.0398in" style:line-style="solid" style:adjustment="left" style:rel-width="25%" style:color="#000000"/>
@@ -350,8 +353,11 @@ text_empty="""
 """
 
 
-author_highlight = """<text:span text:style-name="T5">{author}</text:span>"""
-author_normal = """<text:span text:style-name="T1"> {author} </text:span>"""
+def text_highlight(text):
+    return """<text:span text:style-name="T5">{text}</text:span>""".format(text=text)
+
+def text_normal(text):
+    return """<text:span text:style-name="T1"> {text} </text:span>""".format(text=text)
 
 table="""
    <text:p text:style-name="P2">{list_index}.</text:p>
@@ -369,7 +375,7 @@ table="""
     </table:table-row>
     <table:table-row table:style-name="Table7.1">
      <table:table-cell table:style-name="Table7.A1" table:number-columns-spanned="4" office:value-type="string">
-      <text:p text:style-name="P4"><text:span text:style-name="T1">Title:</text:span><text:span text:style-name="T1">{title}</text:span></text:p>
+      <text:p text:style-name="P4"><text:span text:style-name="T1">Title: </text:span><text:span text:style-name="T8">{title}</text:span></text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
@@ -399,7 +405,7 @@ table="""
     </table:table-row>
     <table:table-row table:style-name="Table7.1">
      <table:table-cell table:style-name="Table7.A1" office:value-type="string">
-      <text:p text:style-name="P3"><text:span text:style-name="T1">ISSN:</text:span></text:p>
+      <text:p text:style-name="P3"><text:span text:style-name="T1">ISSN: {issn}</text:span></text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table7.A1" office:value-type="string">
       <text:p text:style-name="P5"/>
@@ -426,17 +432,7 @@ table="""
       <text:p text:style-name="P5"/>
      </table:table-cell>
      <table:table-cell table:style-name="Table7.A1" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="P3"><text:span text:style-name="T1">Quartile </text:span><text:span text:style-name="T6">{quartile} </text:span></text:p>
-     </table:table-cell>
-     <table:covered-table-cell/>
-     <table:covered-table-cell/>
-    </table:table-row>
-    <table:table-row table:style-name="Table7.7">
-     <table:table-cell table:style-name="Table7.A1" office:value-type="string">
-      <text:p text:style-name="P6"/>
-     </table:table-cell>
-     <table:table-cell table:style-name="Table7.A1" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="P6">Citations: {citations}</text:p>
+      <text:p text:style-name="P3"><text:span text:style-name="T1">Quartile </text:span><text:span text:style-name="T6">Q{quartile} </text:span></text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
@@ -484,7 +480,8 @@ def write_table(list_index=0,
                 final_pag="",
                 place="",
                 database="Web of Science",
-                quartile="Q2",
+                quartile="",
+                issn="",
                 num_citations=None):
     return table.format(
         list_index=list_index,
@@ -498,6 +495,7 @@ def write_table(list_index=0,
         place=place,
         database=database,
         quartile=quartile,
+        issn=issn,
         citations=write_citations(num_citations)
         )
 

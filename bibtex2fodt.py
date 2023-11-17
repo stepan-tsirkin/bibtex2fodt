@@ -7,7 +7,7 @@ parser = bibtex.Parser()
 fout_name = "bibliography_tables.fodt"
 start_year = 2017
 highlight_author = "Tsirkin"
-bibfile="tsirkin.bib"
+bibfile="tsirkin-wos-2023-11-17.bib"
 default_quartile=2
 
 def write_person(person):
@@ -63,6 +63,8 @@ def getpages(entry):
             return pages[0],pages[-1]
         else:
             return pages,""
+    elif "Article-Number" in entry.fields:
+        return entry.fields["Article-Number"].strip("{} "),""
     else:
         return "",""
 
@@ -77,6 +79,19 @@ def getissn(entry):
         return entry.fields['issn'].strip("{} ")
     else:
         return ""
+
+def getcitations(entry):
+    res = None
+    if 'times-cited' in entry.fields:
+        res = int(entry.fields['times-cited'].strip("{} "))
+    elif 'cited' in entry.fields:
+        res = int(entry.fields['cited'].strip("{} "))
+
+    # do not write zero citations
+    if res is not None and res<=0:
+        res=None
+
+    return res
 
 bib_data = parser.parse_file(bibfile)
 print(list(bib_data.entries.keys()))
@@ -93,13 +108,13 @@ def write_entry_as_table(i,entry):
         journal=getjournal(entry),
         authors=authors,
         quartile=getquartile(entry),
-        num_citations=None,
         year=getyearint(entry),
         volume= entry.fields['volume'].strip("{} }"),
         initial_pag=pages[0],
         final_pag=pages[1],
         place=getplace(entry),
-        issn=getissn(entry)
+        issn=getissn(entry),
+        num_citations = getcitations(entry)
         )
 
 fout = open(fout_name, "w")

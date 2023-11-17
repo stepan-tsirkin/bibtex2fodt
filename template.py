@@ -449,7 +449,7 @@ citations = """
       <text:p text:style-name="P6"/>
      </table:table-cell>
      <table:table-cell table:style-name="Table7.A1" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="P6">Citations: {citations}</text:p>
+      <text:p text:style-name="P6">   <text:span text:style-name="T5">Citations: {citations}</text:span> </text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>

@@ -267,6 +267,24 @@ header = """<?xml version="1.0" encoding="UTF-8"?>
   <style:style style:name="Table7.7" style:family="table-row">
    <style:table-row-properties style:min-row-height="0.2271in" fo:keep-together="always"/>
   </style:style>
+  <style:style style:name="Table27" style:family="table">
+   <style:table-properties style:width="6.6451in" fo:margin-left="0.0486in" fo:margin-top="0in" fo:margin-bottom="0in" table:align="left" style:writing-mode="lr-tb"/>
+  </style:style>
+  <style:style style:name="Table27.A" style:family="table-column">
+   <style:table-column-properties style:column-width="4.3806in"/>
+  </style:style>
+  <style:style style:name="Table27.B" style:family="table-column">
+   <style:table-column-properties style:column-width="2.2646in"/>
+  </style:style>
+  <style:style style:name="Table27.1" style:family="table-row">
+   <style:table-row-properties fo:keep-together="always"/>
+  </style:style>
+  <style:style style:name="Table27.A1" style:family="table-cell">
+   <style:table-cell-properties fo:padding-left="0.0486in" fo:padding-right="0.0486in" fo:padding-top="0in" fo:padding-bottom="0in" fo:border="none"/>
+  </style:style>
+  <style:style style:name="Table27.6" style:family="table-row">
+   <style:table-row-properties style:min-row-height="0.2194in" fo:keep-together="always"/>
+  </style:style>
   <style:style style:name="P1" style:family="paragraph" style:parent-style-name="Standard">
    <style:paragraph-properties fo:text-align="justify" style:justify-single-word="false"/>
    <style:text-properties fo:color="#000000" loext:opacity="100%" style:font-name="Arial" fo:language="en" fo:country="GB" fo:font-weight="bold" officeooo:paragraph-rsid="000f0823" style:language-asian="es" style:country-asian="ES" style:font-weight-asian="bold" style:font-name-complex="Arial1"/>
@@ -463,6 +481,52 @@ footer="""
 """
 
 
+table_conf="""
+   <text:p text:style-name="P2">{list_index}.</text:p>
+   <table:table table:name="Table27" table:style-name="Table27">
+    <table:table-column table:style-name="Table27.A"/>
+    <table:table-column table:style-name="Table27.B"/>
+    <table:table-row table:style-name="Table27.1">
+     <table:table-cell table:style-name="Table27.A1" table:number-columns-spanned="2" office:value-type="string">
+      <text:p text:style-name="P10"><text:span text:style-name="T1">Authors: {authors}</text:span></text:p>
+     </table:table-cell>
+     <table:covered-table-cell/>
+    </table:table-row>
+    <table:table-row table:style-name="Table27.1">
+     <table:table-cell table:style-name="Table27.A1" table:number-columns-spanned="2" office:value-type="string">
+      <text:p text:style-name="P10"><text:span text:style-name="T1">Title: </text:span><text:span text:style-name="T8">{title}</text:span></text:p>
+     </table:table-cell>
+     <table:covered-table-cell/>
+    </table:table-row>
+    <table:table-row table:style-name="Table27.1">
+     <table:table-cell table:style-name="Table27.A1" table:number-columns-spanned="2" office:value-type="string">
+      <text:p text:style-name="P11"><text:span text:style-name="T1">Type of contribution:</text:span> <text:span text:style-name="T5">{type_contrib}</text:span></text:p>
+     </table:table-cell>
+     <table:covered-table-cell/>
+    </table:table-row>
+    <table:table-row table:style-name="Table27.1">
+     <table:table-cell table:style-name="Table27.A1" table:number-columns-spanned="2" office:value-type="string">
+      <text:p text:style-name="P11"><text:span text:style-name="T1">Conference: {conference}</text:span></text:p>
+     </table:table-cell>
+     <table:covered-table-cell/>
+    </table:table-row>
+    <table:table-row table:style-name="Table27.1">
+     <table:table-cell table:style-name="Table27.A1" table:number-columns-spanned="2" office:value-type="string">
+      <text:p text:style-name="P11"><text:span text:style-name="T1">Publication: {publication}</text:span></text:p>
+     </table:table-cell>
+     <table:covered-table-cell/>
+    </table:table-row>
+    <table:table-row table:style-name="Table27.6">
+     <table:table-cell table:style-name="Table27.A1" office:value-type="string">
+      <text:p text:style-name="P11"><text:span text:style-name="T1">City of event: {place}</text:span></text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="Table27.A1" office:value-type="string">
+      <text:p text:style-name="P11"><text:span text:style-name="T1">Date: {date}</text:span></text:p>
+     </table:table-cell>
+    </table:table-row>
+   </table:table>
+"""
+
 def write_citations(number=None):
     if number is None:
         return ""
@@ -497,5 +561,25 @@ def write_table(list_index=0,
         quartile=quartile,
         issn=issn,
         citations=write_citations(num_citations)
+        )
+
+
+def write_table_conf(list_index=0,
+                authors="Some Authors",
+                title="",
+                type_contrib="",
+                conference="",
+                date="",
+                place="",
+                publication=""):
+    return table_conf.format(
+        list_index=list_index,
+        authors=authors,
+        title=title,
+        type_contrib=type_contrib,
+        conference=conference,
+        date=date,
+        publication=publication,
+        place=place,
         )
 
